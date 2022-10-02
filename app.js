@@ -111,7 +111,7 @@ async function updatePositions() {
 						await db.put(key, stats);
 						await rest.post(Routes.channelMessages(channelId), {
 							body: {
-								content: `Updated Queue Position: ${stats.position}\nReply with \`?position\` to check current position in queue`,
+								content: `Updated Queue Position: \`${stats.position}\`\nReply with \`?position\` to check current position in queue`,
 							},
 						})
 					} catch (error) {
