@@ -1,16 +1,16 @@
-const cluster = require('cluster');
+const cluster = require("cluster");
 const { open } = require("lmdb");
 const { Client, GatewayIntentBits } = require("discord.js");
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v10');
+const { REST } = require("@discordjs/rest");
+const { Routes } = require("discord-api-types/v10");
 
 const REFRESH_DELAY = 2_000 // in Milliseconds
 const TOKEN = ""
 
-const rest = new REST({ version: '10' }).setToken(TOKEN);
+const rest = new REST({ version: "10" }).setToken(TOKEN);
 
 const db = open({
-	path: './puffle',
+	path: "./puffle",
 });
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
