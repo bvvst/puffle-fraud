@@ -14,25 +14,19 @@ const db = open({
 });
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageTyping, GatewayIntentBits.MessageContent] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
 
 if (cluster.isMaster) {
 	main();
-
 	cluster.fork();
 } else {
-
 	updatePositions();
 }
 
 client.on("ready", () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 });
-
-client.on("typingStart", async (typing) => {
-	// console.log(typing);
-})
 
 client.on("messageCreate", async (message) => {
 	if (!message.channel.name.startsWith("ticket-") || message.author.bot) {
