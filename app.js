@@ -4,8 +4,8 @@ const { Client, GatewayIntentBits } = require("discord.js");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v10");
 
-const REFRESH_DELAY = 2_000 // in Milliseconds
-const TOKEN = ""
+const REFRESH_DELAY = 300000 // in Milliseconds
+const TOKEN = "MTAyNjMxNTEzOTQ3NTA0NjQ1MQ.GjsrXy.hDUo_qTp3kmw2KQrOnoCnXY7czsDV6kQ-9JgPQ"
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
 
