@@ -5,7 +5,7 @@ const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v10");
 
 const REFRESH_DELAY = 300000 // in Milliseconds
-const TOKEN = "MTAyNjMxNTEzOTQ3NTA0NjQ1MQ.GjsrXy.hDUo_qTp3kmw2KQrOnoCnXY7czsDV6kQ-9JgPQ"
+const TOKEN = "MTAyNjMxNTEzOTQ3NTA0NjQ1MQ.GvfEIe.N0-MM2XTrQjcMexG_caE8q0cRPzRDw5cMGY0NM"
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
 
