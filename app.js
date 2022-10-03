@@ -5,7 +5,7 @@ const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v10");
 
 const REFRESH_DELAY = 300000 // in Milliseconds
-const TOKEN = "MTAyNjMxNTEzOTQ3NTA0NjQ1MQ.GvfEIe.N0-MM2XTrQjcMexG_caE8q0cRPzRDw5cMGY0NM"
+const TOKEN = "MTAyNjMxNTEzOTQ3NTA0NjQ1MQ.G7S5Fq.DjYrQh4XbeoZkrrgTjx051DFXzMXyB_DkjSkL0"
 
 const rest = new REST({ version: "10" }).setToken(TOKEN);
 
@@ -41,14 +41,14 @@ client.on("messageCreate", async (message) => {
 				const stats = {
 					user: message.author.id,
 					notified: false,
-					position: Math.floor(Math.random() * 21 + 20),
+					position: Math.floor(Math.random() * 21 + 8),
 				};
 
 				await db.put(`channel:${message.channelId}`, stats);
 				await message.channel.send(`You are now in queue. Position in Queue: \`${stats.position}\`\nReply with \`?position\` to check current position in queue`);
 				break;
-			default:
-				await message.channel.send("You are not yet in the queue, join the queue with `?queue`");
+			case "?apple":
+				intro(message.channel, message)
 		}
 	} else {
 		switch (message.content) {
@@ -68,7 +68,7 @@ client.on("messageCreate", async (message) => {
 				const requeue = {
 					user: message.author.id,
 					notified: false,
-					position: Math.floor(Math.random() * 21 + 30),
+					position: Math.floor(Math.random() * 21 + 10),
 
 				};
 
@@ -85,9 +85,45 @@ client.on("channelCreate", async (channel) => {
 	if (!channel.name.startsWith("ticket-")) {
 		return
 	}
-
-	await channel.send("Welcome to 4PF, due to high message volumes we now operate a queue system.\nReply with `?queue` to get a position in line.")
+	await sleep(1000)
+	channel.send("Welcome to Puffle Fraud, please indicate what store you will be refunding:\n`?apple` - Apple Store")
 })
+
+const intro = (channel, message) => {
+	let filter = (m) => m.author.id === message.author.id
+	channel.send("Apple selected, please type `y` to confirm or `n` to decline").then(() => {
+		channel.awaitMessages({
+			filter: filter,
+			max: 1,
+		})
+			.then(collected => {
+				if (collected.first().content == 'y') {
+					channel.send("Please send the link of the item you wish to refund.\nExample: <https://www.apple.com/shop/buy-iphone/iphone-14-pro>").then(() => {
+						channel.awaitMessages({
+							filter: filter,
+							max: 1,
+							time: 30000,
+							errors: ['time']
+						}).then(collected => {
+							if (collected.first().content.startsWith("https://www.apple")) {
+								channel.send("Valid link accepted. Due to high volume, we've implemented a queue system. Respond with `?queue` to enter the line.")
+							} else {
+								message.reply("Invalid link, restarting")
+								intro(channel, message)
+							}
+						})
+					})
+				} else {
+					channel.send("Restarting...")
+					intro(channel, message)
+				}
+			})
+			.catch(collected => {
+				channel.send('Timeout. Restarting');
+				intro(channel, message)
+			});
+	})
+}
 
 
 async function main() {
